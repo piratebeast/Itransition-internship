@@ -1,0 +1,14 @@
+D:\Itransition-internship\task2\Task2_SHA3\Task2_SHA3\bin\Debug\net9.0\Task2_SHA3.exe
+D:\Itransition-internship\task2\Task2_SHA3\Task2_SHA3\bin\Debug\net9.0\Task2_SHA3.deps.json
+D:\Itransition-internship\task2\Task2_SHA3\Task2_SHA3\bin\Debug\net9.0\Task2_SHA3.runtimeconfig.json
+D:\Itransition-internship\task2\Task2_SHA3\Task2_SHA3\bin\Debug\net9.0\Task2_SHA3.dll
+D:\Itransition-internship\task2\Task2_SHA3\Task2_SHA3\bin\Debug\net9.0\Task2_SHA3.pdb
+D:\Itransition-internship\task2\Task2_SHA3\Task2_SHA3\obj\Debug\net9.0\Task2_SHA3.GeneratedMSBuildEditorConfig.editorconfig
+D:\Itransition-internship\task2\Task2_SHA3\Task2_SHA3\obj\Debug\net9.0\Task2_SHA3.AssemblyInfoInputs.cache
+D:\Itransition-internship\task2\Task2_SHA3\Task2_SHA3\obj\Debug\net9.0\Task2_SHA3.AssemblyInfo.cs
+D:\Itransition-internship\task2\Task2_SHA3\Task2_SHA3\obj\Debug\net9.0\Task2_SHA3.csproj.CoreCompileInputs.cache
+D:\Itransition-internship\task2\Task2_SHA3\Task2_SHA3\obj\Debug\net9.0\Task2_SHA3.dll
+D:\Itransition-internship\task2\Task2_SHA3\Task2_SHA3\obj\Debug\net9.0\refint\Task2_SHA3.dll
+D:\Itransition-internship\task2\Task2_SHA3\Task2_SHA3\obj\Debug\net9.0\Task2_SHA3.pdb
+D:\Itransition-internship\task2\Task2_SHA3\Task2_SHA3\obj\Debug\net9.0\Task2_SHA3.genruntimeconfig.cache
+D:\Itransition-internship\task2\Task2_SHA3\Task2_SHA3\obj\Debug\net9.0\ref\Task2_SHA3.dll
