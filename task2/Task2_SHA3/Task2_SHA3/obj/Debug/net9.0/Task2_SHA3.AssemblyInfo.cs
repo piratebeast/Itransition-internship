@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Task2_SHA3")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+2de53c69f056f13ea1e0c8fd71b290764c510655")]
 [assembly: System.Reflection.AssemblyProductAttribute("Task2_SHA3")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Task2_SHA3")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

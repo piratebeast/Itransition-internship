@@ -12,3 +12,4 @@ D:\Itransition-internship\task2\Task2_SHA3\Task2_SHA3\obj\Debug\net9.0\refint\Ta
 D:\Itransition-internship\task2\Task2_SHA3\Task2_SHA3\obj\Debug\net9.0\Task2_SHA3.pdb
 D:\Itransition-internship\task2\Task2_SHA3\Task2_SHA3\obj\Debug\net9.0\Task2_SHA3.genruntimeconfig.cache
 D:\Itransition-internship\task2\Task2_SHA3\Task2_SHA3\obj\Debug\net9.0\ref\Task2_SHA3.dll
+D:\Itransition-internship\task2\Task2_SHA3\Task2_SHA3\obj\Debug\net9.0\Task2_SHA3.sourcelink.json
