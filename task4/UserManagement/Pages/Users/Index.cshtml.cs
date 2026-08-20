@@ -30,7 +30,13 @@ public class IndexModel : PageModel
     [TempData] public string? StatusMessage { get; set; }
     [TempData] public string? ErrorMessage { get; set; }
 
-    public async Task OnGetAsync() => await LoadUsersAsync();
+    public string? CurrentUserId { get; set; }
+
+    public async Task OnGetAsync()
+    {
+        CurrentUserId = _userManager.GetUserId(User);
+        await LoadUsersAsync();
+    }
 
     private async Task LoadUsersAsync()
     {

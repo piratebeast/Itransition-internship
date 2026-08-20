@@ -109,6 +109,22 @@
             </tbody>
         </table>
     </div>
+
+    <div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="confirmLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="confirmLabel">Confirm action</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" id="confirmBody"></div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-danger" id="confirmProceed">Proceed</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </form>
 
 @section Scripts {
@@ -117,6 +133,7 @@
             const selectAll = document.getElementById('selectAll');
             const rows = Array.from(document.querySelectorAll('.row-select'));
             const needSelection = Array.from(document.querySelectorAll('.selection-required'));
+            const currentUserId = '@Model.CurrentUserId';
 
             function sync() {
                 const checked = rows.filter(r => r.checked).length;
@@ -140,14 +157,54 @@
                 bodyRows.forEach(tr => {
                     const match = tr.textContent.toLowerCase().includes(term);
                     tr.hidden = !match;
-                    // Hidden rows must not stay selected, or an action would apply to
-                    // records the user can no longer see.
+
                     if (!match) {
                         const cb = tr.querySelector('.row-select');
                         if (cb) cb.checked = false;
                     }
                 });
                 sync();
+            });
+
+            // Destructive actions get a confirmation step. Blocking is reversible,
+            // so only deletes are intercepted.
+            const modalEl = document.getElementById('confirmModal');
+            const modal = new bootstrap.Modal(modalEl);
+            const confirmBody = document.getElementById('confirmBody');
+            const confirmProceed = document.getElementById('confirmProceed');
+            let pendingButton = null;
+
+            document.querySelectorAll('button[type="submit"]').forEach(btn => {
+                const action = btn.getAttribute('formaction') || '';
+                if (!action.includes('Delete')) return;
+
+                btn.addEventListener('click', e => {
+                    e.preventDefault();
+                    pendingButton = btn;
+
+                    const checkedRows = rows.filter(r => r.checked);
+                    const selfChecked = checkedRows.some(r => r.value === currentUserId);
+
+                    let message = action.includes('DeleteUnverified')
+                        ? 'Delete all unverified users? This cannot be undone.'
+                        : `Delete ${checkedRows.length} user(s)? This cannot be undone.`;
+
+                    if (selfChecked) {
+                        message += ' This includes your own account — you will be signed out.';
+                    }
+
+                    confirmBody.textContent = message;
+                    modal.show();
+                });
+            });
+
+            confirmProceed.addEventListener('click', () => {
+                modal.hide();
+                if (pendingButton) {
+                    const form = pendingButton.form;
+                    form.action = pendingButton.getAttribute('formaction');
+                    form.submit();
+                }
             });
 
             [...document.querySelectorAll('[data-bs-toggle="tooltip"]')]
