@@ -135,7 +135,6 @@ namespace UserManagement.Areas.Identity.Pages.Account
                 }
                 catch (DbUpdateException ex) when (ex.IsUniqueViolation("IX_AspNetUsers_NormalizedEmail_Unique"))
                 {
-                    // The DB rejected a duplicate that slipped past Identity's SELECT check.
                     ModelState.AddModelError(string.Empty, "That e-mail address is already registered.");
                     return Page();
                 }
@@ -166,7 +165,6 @@ namespace UserManagement.Areas.Identity.Pages.Account
                 }
             }
 
-            // If we got this far, something failed, redisplay form
             return Page();
         }
 

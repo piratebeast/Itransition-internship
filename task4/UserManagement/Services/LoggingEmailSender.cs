@@ -2,7 +2,6 @@
 
 namespace UserManagement.Services;
 
-// Logs the confirmation link so you can click it during development.
 public class LoggingEmailSender : IEmailSender
 {
     private readonly ILogger<LoggingEmailSender> _logger;

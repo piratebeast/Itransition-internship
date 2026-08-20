@@ -1,0 +1,126 @@
+﻿@page
+@model UserManagement.Pages.Users.IndexModel
+@using Humanizer
+@using UserManagement.Models
+@{
+    ViewData["Title"] = "Users";
+}
+
+<h1 class="h4 mb-3">Users</h1>
+
+@if (Model.StatusMessage is not null)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        @Model.StatusMessage
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+@if (Model.ErrorMessage is not null)
+{
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        @Model.ErrorMessage
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+
+<form method="post">
+    <div class="d-flex flex-wrap gap-2 align-items-center border rounded p-2 mb-3">
+        <button type="submit" asp-page-handler="Block"
+                class="btn btn-outline-primary btn-sm selection-required"
+                data-bs-toggle="tooltip" title="Block selected users">
+            <i class="bi bi-lock"></i> Block
+        </button>
+
+        <button type="submit" asp-page-handler="Unblock"
+                class="btn btn-outline-secondary btn-sm selection-required"
+                data-bs-toggle="tooltip" title="Unblock selected users"
+                aria-label="Unblock">
+            <i class="bi bi-unlock"></i>
+        </button>
+
+        <button type="submit" asp-page-handler="Delete"
+                class="btn btn-outline-danger btn-sm selection-required"
+                data-bs-toggle="tooltip" title="Delete selected users"
+                aria-label="Delete">
+            <i class="bi bi-trash"></i>
+        </button>
+
+        <button type="submit" asp-page-handler="DeleteUnverified"
+                class="btn btn-outline-warning btn-sm"
+                data-bs-toggle="tooltip" title="Delete all unverified users"
+                aria-label="Delete unverified">
+            <i class="bi bi-person-x"></i>
+        </button>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table table-hover align-middle">
+            <thead>
+                <tr>
+                    <th scope="col" style="width: 2.5rem;">
+                        <input class="form-check-input" type="checkbox" id="selectAll"
+                               aria-label="Select all users" />
+                    </th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Last seen</th>
+                    <th scope="col">Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var user in Model.Users)
+                {
+                    <tr>
+                        <td>
+                            <input class="form-check-input row-select" type="checkbox"
+                                   name="SelectedIds" value="@user.Id"
+                                   aria-label="Select @user.Name" />
+                        </td>
+                        <td>@user.Name</td>
+                        <td>@user.Email</td>
+                        <td>
+                            @if (user.LastLoginAt is null)
+                            {
+                                <span class="text-muted">Never</span>
+                            }
+                            else
+                            {
+                                <span title="@user.LastLoginAt.Value.ToString("u")">
+                                    @user.LastLoginAt.Value.Humanize()
+                                </span>
+                            }
+                        </td>
+                        <td>@user.Status</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</form>
+
+@section Scripts {
+    <script>
+        (function () {
+            const selectAll = document.getElementById('selectAll');
+            const rows = Array.from(document.querySelectorAll('.row-select'));
+            const needSelection = Array.from(document.querySelectorAll('.selection-required'));
+
+            function sync() {
+                const checked = rows.filter(r => r.checked).length;
+                needSelection.forEach(b => b.disabled = checked === 0);
+                selectAll.checked = checked > 0 && checked === rows.length;
+                selectAll.indeterminate = checked > 0 && checked < rows.length;
+            }
+
+            selectAll.addEventListener('change', () => {
+                rows.forEach(r => r.checked = selectAll.checked);
+                sync();
+            });
+            rows.forEach(r => r.addEventListener('change', sync));
+            sync();
+
+            [...document.querySelectorAll('[data-bs-toggle="tooltip"]')]
+                .forEach(el => new bootstrap.Tooltip(el));
+        })();
+    </script>
+}
