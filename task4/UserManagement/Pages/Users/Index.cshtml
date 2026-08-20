@@ -24,7 +24,7 @@
 }
 
 <form method="post">
-    <div class="d-flex flex-wrap gap-2 align-items-center border rounded p-2 mb-3">
+    <div class="toolbar d-flex flex-wrap gap-2 align-items-center border rounded p-2 mb-3">
         <button type="submit" asp-page-handler="Block"
                 class="btn btn-outline-primary btn-sm selection-required"
                 data-bs-toggle="tooltip" title="Block selected users">
@@ -51,8 +51,12 @@
                 aria-label="Delete unverified">
             <i class="bi bi-person-x"></i>
         </button>
+        <div class="ms-auto">
+            <input type="search" id="filterInput" class="form-control form-control-sm"
+                   style="width: 14rem;" placeholder="Filter" aria-label="Filter users" />
+        </div>
     </div>
-
+    
     <div class="table-responsive">
         <table class="table table-hover align-middle">
             <thead>
@@ -63,21 +67,31 @@
                     </th>
                     <th scope="col">Name</th>
                     <th scope="col">Email</th>
-                    <th scope="col">Last seen</th>
                     <th scope="col">Status</th>
+                    <th scope="col">Last seen</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach (var user in Model.Users)
                 {
-                    <tr>
+                    <tr class="@(user.Status == UserStatus.Blocked ? "text-muted" : "")">
                         <td>
                             <input class="form-check-input row-select" type="checkbox"
                                    name="SelectedIds" value="@user.Id"
                                    aria-label="Select @user.Name" />
                         </td>
-                        <td>@user.Name</td>
+                        <td>
+                            @if (user.Status == UserStatus.Blocked)
+                            {
+                                <s>@user.Name</s>
+                            }
+                            else
+                            {
+                                @user.Name
+                            }
+                        </td>
                         <td>@user.Email</td>
+                        <td>@user.Status</td>
                         <td>
                             @if (user.LastLoginAt is null)
                             {
@@ -90,7 +104,6 @@
                                 </span>
                             }
                         </td>
-                        <td>@user.Status</td>
                     </tr>
                 }
             </tbody>
@@ -118,6 +131,24 @@
             });
             rows.forEach(r => r.addEventListener('change', sync));
             sync();
+
+            const filterInput = document.getElementById('filterInput');
+            const bodyRows = Array.from(document.querySelectorAll('tbody tr'));
+
+            filterInput.addEventListener('input', () => {
+                const term = filterInput.value.trim().toLowerCase();
+                bodyRows.forEach(tr => {
+                    const match = tr.textContent.toLowerCase().includes(term);
+                    tr.hidden = !match;
+                    // Hidden rows must not stay selected, or an action would apply to
+                    // records the user can no longer see.
+                    if (!match) {
+                        const cb = tr.querySelector('.row-select');
+                        if (cb) cb.checked = false;
+                    }
+                });
+                sync();
+            });
 
             [...document.querySelectorAll('[data-bs-toggle="tooltip"]')]
                 .forEach(el => new bootstrap.Tooltip(el));

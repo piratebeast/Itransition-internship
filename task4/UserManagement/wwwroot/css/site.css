@@ -1,31 +1,193 @@
+/* ---- Design tokens -------------------------------------------------- */
+:root {
+    --ink: #1c2530;
+    --muted: #6b7785;
+    --line: #dde2e8;
+    --accent: #1f4e79;
+    --panel: #223244;
+}
+
 html {
-  font-size: 14px;
+    font-size: 14px;
+    position: relative;
+    min-height: 100%;
 }
 
 @media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
-}
-
-.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
-}
-
-html {
-  position: relative;
-  min-height: 100%;
+    html {
+        font-size: 16px;
+    }
 }
 
 body {
-  margin-bottom: 60px;
+    margin-bottom: 60px;
+    color: var(--ink);
 }
 
-.form-floating > .form-control-plaintext::placeholder, .form-floating > .form-control::placeholder {
-  color: var(--bs-secondary-color);
-  text-align: end;
+/* Focus rings use the accent, not Bootstrap's default blue. */
+.btn:focus,
+.btn:active:focus,
+.btn-link.nav-link:focus,
+.form-control:focus,
+.form-check-input:focus {
+    box-shadow: 0 0 0 .2rem rgba(31, 78, 121, .2);
 }
 
-.form-floating > .form-control-plaintext:focus::placeholder, .form-floating > .form-control:focus::placeholder {
-  text-align: start;
+.form-control:focus {
+    border-color: var(--accent);
+}
+
+/* ---- Application shell ---------------------------------------------- */
+.navbar-brand {
+    font-weight: 600;
+    letter-spacing: -.01em;
+}
+
+.navbar {
+    border-bottom: 1px solid var(--line) !important;
+}
+
+h1, h2, h3 {
+    font-weight: 600;
+    letter-spacing: -.01em;
+}
+
+.table > thead > tr > th {
+    font-size: .8125rem;
+    letter-spacing: .04em;
+    text-transform: uppercase;
+    color: var(--muted);
+    font-weight: 600;
+    border-bottom: 1px solid var(--line);
+}
+
+.table > tbody > tr > td {
+    border-color: var(--line);
+}
+
+.toolbar {
+    border: 1px solid var(--line) !important;
+    background: #f8f9fa;
+}
+
+.btn-outline-primary {
+    color: var(--accent);
+    border-color: var(--accent);
+}
+
+    .btn-outline-primary:hover,
+    .btn-outline-primary:not(:disabled):not(.disabled):active {
+        background: var(--accent);
+        border-color: var(--accent);
+        color: #fff;
+    }
+
+footer {
+    color: var(--muted);
+    font-size: .875rem;
+}
+
+/* ---- Auth pages ------------------------------------------------------ */
+.auth-body {
+    margin: 0;
+    color: var(--ink);
+    background: #fff;
+}
+
+.auth-split {
+    display: grid;
+    grid-template-columns: 1fr;
+    min-height: 100vh;
+}
+
+@media (min-width: 992px) {
+    .auth-split {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+.auth-form-side {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 3rem 1.5rem;
+}
+
+.auth-form-inner {
+    width: 100%;
+    max-width: 22rem;
+}
+
+.auth-eyebrow {
+    font-size: .75rem;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: .25rem;
+}
+
+.auth-title {
+    font-size: 1.375rem;
+    font-weight: 600;
+    margin-bottom: 1.75rem;
+}
+
+.btn-auth {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #fff;
+    width: 100%;
+    padding: .5rem;
+    font-weight: 500;
+}
+
+    .btn-auth:hover,
+    .btn-auth:focus {
+        background: #17395a;
+        border-color: #17395a;
+        color: #fff;
+    }
+
+.auth-foot {
+    margin-top: 2rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--line);
+    font-size: .875rem;
+    color: var(--muted);
+}
+
+.auth-brand-side {
+    display: none;
+    background: var(--panel) url('/img/auth-panel.jpg') center/cover no-repeat;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+}
+
+@media (min-width: 992px) {
+    .auth-brand-side {
+        display: flex;
+    }
+}
+
+.auth-brand-mark {
+    text-align: center;
+    color: #fff;
+    user-select: none;
+}
+
+.auth-brand-name {
+    display: block;
+    font-size: 1.75rem;
+    font-weight: 600;
+    letter-spacing: -.01em;
+}
+
+.auth-brand-sub {
+    display: block;
+    margin-top: .375rem;
+    font-size: .8125rem;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,.6);
 }
