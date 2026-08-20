@@ -1,5 +1,4 @@
-﻿using System.Net.Http.Headers;
-using System.Text;
+﻿using System.Text;
 using System.Text.Json;
 
 namespace UserManagement.Services;
@@ -43,27 +42,27 @@ public class EmailBackgroundService : BackgroundService
     {
         var apiKey = _config["Email:ApiKey"]!;
         var from = _config["Email:From"]!;
+        var fromName = _config["Email:FromName"] ?? "User Management";
 
         var payload = new
         {
-            from,
-            to = new[] { job.To },
+            sender = new { email = from, name = fromName },
+            to = new[] { new { email = job.To } },
             subject = job.Subject,
-            html = job.HtmlBody
+            htmlContent = job.HtmlBody
         };
 
         var client = _httpFactory.CreateClient();
-        using var request = new HttpRequestMessage(HttpMethod.Post, "https://api.resend.com/emails");
-        request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", apiKey);
+        using var request = new HttpRequestMessage(HttpMethod.Post, "https://api.brevo.com/v3/smtp/email");
+        request.Headers.Add("api-key", apiKey);
         request.Content = new StringContent(
             JsonSerializer.Serialize(payload), Encoding.UTF8, "application/json");
 
         var response = await client.SendAsync(request, ct);
-
         if (!response.IsSuccessStatusCode)
         {
             var body = await response.Content.ReadAsStringAsync(ct);
-            throw new InvalidOperationException($"Resend returned {(int)response.StatusCode}: {body}");
+            throw new InvalidOperationException($"Brevo returned {(int)response.StatusCode}: {body}");
         }
     }
 }
