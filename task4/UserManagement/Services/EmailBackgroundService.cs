@@ -1,6 +1,6 @@
-﻿using MailKit.Net.Smtp;
-using MailKit.Security;
-using MimeKit;
+﻿using System.Net.Http.Headers;
+using System.Text;
+using System.Text.Json;
 
 namespace UserManagement.Services;
 
@@ -9,13 +9,18 @@ public class EmailBackgroundService : BackgroundService
     private readonly IEmailQueue _queue;
     private readonly IConfiguration _config;
     private readonly ILogger<EmailBackgroundService> _logger;
+    private readonly IHttpClientFactory _httpFactory;
 
-    public EmailBackgroundService(IEmailQueue queue, IConfiguration config,
-        ILogger<EmailBackgroundService> logger)
+    public EmailBackgroundService(
+        IEmailQueue queue,
+        IConfiguration config,
+        ILogger<EmailBackgroundService> logger,
+        IHttpClientFactory httpFactory)
     {
         _queue = queue;
         _config = config;
         _logger = logger;
+        _httpFactory = httpFactory;
     }
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
@@ -29,8 +34,6 @@ public class EmailBackgroundService : BackgroundService
             }
             catch (Exception ex)
             {
-                // A failed email must never take down the worker, or every
-                // subsequent registration would silently stop sending.
                 _logger.LogError(ex, "Failed to send email to {To}", job.To);
             }
         }
@@ -38,28 +41,29 @@ public class EmailBackgroundService : BackgroundService
 
     private async Task SendAsync(EmailJob job, CancellationToken ct)
     {
-        var host = _config["Email:Host"]!;
-        var port = int.Parse(_config["Email:Port"]!);
-        var user = _config["Email:User"]!;
-        var pass = _config["Email:Password"]!;
-        var from = _config["Email:From"] ?? user;
+        var apiKey = _config["Email:ApiKey"]!;
+        var from = _config["Email:From"]!;
 
-        var message = new MimeMessage();
-        message.From.Add(MailboxAddress.Parse(from));
-        message.To.Add(MailboxAddress.Parse(job.To));
-        message.Subject = job.Subject;
-        message.Body = new TextPart("html") { Text = job.HtmlBody };
+        var payload = new
+        {
+            from,
+            to = new[] { job.To },
+            subject = job.Subject,
+            html = job.HtmlBody
+        };
 
-        // Port 465 expects TLS from the first byte; 587 negotiates it after
-        // connecting. Using the wrong mode for the port hangs or errors.
-        var secure = port == 465
-            ? SecureSocketOptions.SslOnConnect
-            : SecureSocketOptions.StartTls;
+        var client = _httpFactory.CreateClient();
+        using var request = new HttpRequestMessage(HttpMethod.Post, "https://api.resend.com/emails");
+        request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", apiKey);
+        request.Content = new StringContent(
+            JsonSerializer.Serialize(payload), Encoding.UTF8, "application/json");
 
-        using var client = new SmtpClient();
-        await client.ConnectAsync(host, port, secure, ct);
-        await client.AuthenticateAsync(user, pass, ct);
-        await client.SendAsync(message, ct);
-        await client.DisconnectAsync(true, ct);
+        var response = await client.SendAsync(request, ct);
+
+        if (!response.IsSuccessStatusCode)
+        {
+            var body = await response.Content.ReadAsStringAsync(ct);
+            throw new InvalidOperationException($"Resend returned {(int)response.StatusCode}: {body}");
+        }
     }
 }

@@ -51,6 +51,8 @@ if (!string.IsNullOrEmpty(port))
     builder.WebHost.UseUrls($"http://0.0.0.0:{port}");
 }
 
+builder.Services.AddHttpClient();
+
 var app = builder.Build();
 
 app.UseForwardedHeaders();
