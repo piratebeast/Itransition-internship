@@ -50,8 +50,14 @@ public class EmailBackgroundService : BackgroundService
         message.Subject = job.Subject;
         message.Body = new TextPart("html") { Text = job.HtmlBody };
 
+        // Port 465 expects TLS from the first byte; 587 negotiates it after
+        // connecting. Using the wrong mode for the port hangs or errors.
+        var secure = port == 465
+            ? SecureSocketOptions.SslOnConnect
+            : SecureSocketOptions.StartTls;
+
         using var client = new SmtpClient();
-        await client.ConnectAsync(host, port, SecureSocketOptions.StartTls, ct);
+        await client.ConnectAsync(host, port, secure, ct);
         await client.AuthenticateAsync(user, pass, ct);
         await client.SendAsync(message, ct);
         await client.DisconnectAsync(true, ct);
