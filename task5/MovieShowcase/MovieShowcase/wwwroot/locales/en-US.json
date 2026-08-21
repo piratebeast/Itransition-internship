@@ -1,0 +1,110 @@
+﻿{
+    "culture": "en-US",
+    "displayName": "English (US)",
+
+    "bogusLocale": "en",
+
+    "genres": [ "Action", "Comedy", "Drama", "Thriller", "Sci-Fi", "Romance", "Horror", "Family" ],
+    "ageRatings": [ "G", "PG", "13+", "16+", "18+" ],
+
+    "titlePatterns": [
+        {
+            "weight": 10,
+            "template": "{Adj} {Noun}",
+            "genres": []
+        },
+        {
+            "weight": 8,
+            "template": "{Verbing} {Noun}",
+            "genres": [ "Drama", "Romance", "Comedy" ]
+        },
+        {
+            "weight": 6,
+            "template": "{Noun}, {Suffix}",
+            "genres": [ "Drama", "Comedy" ]
+        },
+        {
+            "weight": 6,
+            "template": "The {Noun}",
+            "genres": []
+        },
+        {
+            "weight": 5,
+            "template": "{Adv} {Adj}",
+            "genres": [ "Comedy", "Romance" ]
+        },
+        {
+            "weight": 4,
+            "template": "{Noun} of {Noun}",
+            "genres": [ "Drama", "Sci-Fi", "Horror" ]
+        }
+    ],
+
+    "sharedLexicon": {
+        "Verbing": [ "Chasing", "Finding", "Leaving", "Breaking", "Falling", "Waiting" ],
+        "Adv": [ "Almost", "Nearly", "Barely", "Somewhat", "Perfectly" ],
+        "Suffix": [ "Inc.", "Jr.", "Again", "Please", "Tonight", "Forever" ],
+        "role": [ "mother", "daughter", "detective", "teacher", "pilot", "stranger", "brother" ]
+    },
+
+    "lexicon": {
+        "Action": {
+            "Adj": [ "Iron", "Silent", "Final", "Crimson", "Hard" ],
+            "Noun": [ "Protocol", "Havoc", "Strike", "Fallout", "Pursuit" ]
+        },
+        "Comedy": {
+            "Adj": [ "Awkward", "Terrible", "Sticky", "Loud", "Unlikely" ],
+            "Noun": [ "Roommates", "Wedding", "Vacation", "Neighbors", "Favor" ]
+        },
+        "Drama": {
+            "Adj": [ "Quiet", "Ordinary", "Distant", "Broken", "Small" ],
+            "Noun": [ "Graduation", "Letters", "Mother", "Winter", "Promise" ]
+        },
+        "Thriller": {
+            "Adj": [ "Cold", "Missing", "Perfect", "Buried", "Last" ],
+            "Noun": [ "Witness", "Alibi", "Stranger", "Signal", "Debt" ]
+        },
+        "Sci-Fi": {
+            "Adj": [ "Orbital", "Hollow", "Infinite", "Synthetic", "Dark" ],
+            "Noun": [ "Horizon", "Machine", "Colony", "Signal", "Drift" ]
+        },
+        "Romance": {
+            "Adj": [ "Golden", "Slow", "Certain", "Warm", "Second" ],
+            "Noun": [ "Summer", "Letter", "Chance", "Rooftop", "Dance" ]
+        },
+        "Horror": {
+            "Adj": [ "Rotten", "Hollow", "Pale", "Creeping", "Silent" ],
+            "Noun": [ "Cellar", "Hollow", "Visitor", "Hymn", "Teeth" ]
+        },
+        "Family": {
+            "Adj": [ "Brave", "Tiny", "Lost", "Happy", "Wild" ],
+            "Noun": [ "Puppy", "Treehouse", "Adventure", "Circus", "Holiday" ]
+        }
+    },
+
+    "synopsisTemplates": [
+        "After years apart, a {role} and a {role} are forced to reunite when tragedy strikes their family.",
+        "A {role} discovers a secret that could destroy everything they have built.",
+        "When a {role} vanishes without a trace, a {role} risks everything to find the truth."
+    ],
+
+    "reviewTemplates": [
+        "None of it makes any sense to me. Not good.",
+        "I went in expecting nothing and left completely changed.",
+        "The pacing drags in the middle, but the ending earns it.",
+        "Beautifully shot, thinly written."
+    ],
+
+    "trailerCards": [ "THIS FALL", "THIS SUMMER", "COMING SOON", "NEXT YEAR" ],
+
+    "taglines": {
+        "Action": [ "NO ONE IS SAFE", "THE HUNT BEGINS" ],
+        "Comedy": [ "WHAT COULD GO WRONG?", "SOME PLANS BACKFIRE" ],
+        "Drama": [ "SOME WOUNDS NEVER CLOSE", "EVERY FAMILY HAS A SECRET" ],
+        "Thriller": [ "TRUST NO ONE", "THE TRUTH IS BURIED" ],
+        "Sci-Fi": [ "MACHINES WILL RISE", "THE END BEGINS" ],
+        "Romance": [ "LOVE FINDS A WAY", "SOME THINGS ARE WORTH WAITING FOR" ],
+        "Horror": [ "IT IS ALREADY INSIDE", "DO NOT LOOK BACK" ],
+        "Family": [ "ADVENTURE AWAITS", "HOME IS WHERE YOU MAKE IT" ]
+    }
+}
